@@ -13,7 +13,7 @@ public class LawnMowerProgramTest {
     @Test
     public void testLawnMowerProgramConstructorThrowsFileNotFoundException() {
         Assertions.assertThrows(FileNotFoundException.class, () -> {
-            new LawnMowerProgram(new File("src/test/resources/unknownFile.txt"));
+            LawnMowerProgram program = new LawnMowerProgram(new File("src/test/resources/doesnotexist.txt"));
         });
     }
 
@@ -28,35 +28,36 @@ public class LawnMowerProgramTest {
             lines = reader.lines().count();
         }
         try(LawnMowerProgram program = new LawnMowerProgram(file)){
-            for(int i = 0; i < lines; i++){
+            program.readLawn();
+            for(int i = 0; i < (lines-1)/2; i++){
                 Assertions.assertTrue(program.hasNext());
+                program.readLawnMower();
+                Assertions.assertTrue(program.hasNext());
+                program.readInstructions();
             }
             Assertions.assertFalse(program.hasNext());
         }
-
     }
 
     /**
-     * Tests {@link LawnMowerProgram#readLawnSize()} with valid inputs.
+     * Tests {@link LawnMowerProgram#readLawn()}.
      */
     @Test
-    public void testReadLawnSize() throws IOException {
+    public void testReadLawn() throws IOException {
         try(LawnMowerProgram program = new LawnMowerProgram(new File("src/test/resources/program.txt"))){
-            Assertions.assertTrue(program.hasNext());
-            int[] lawnSize = program.readLawnSize();
-            Assertions.assertEquals(5, lawnSize[0]);
-            Assertions.assertEquals(5, lawnSize[1]);
+            Lawn lawn = program.readLawn();
+            Assertions.assertEquals(6, lawn.getWidth());
+            Assertions.assertEquals(6, lawn.getHeight());
         }
     }
 
     /**
-     * Tests {@link LawnMowerProgram#readLawnMower()} with valid inputs.
+     * Tests {@link LawnMowerProgram#readLawnMower()}.
      */
     @Test
     public void testReadLawnMower() throws IOException {
         try(LawnMowerProgram program = new LawnMowerProgram(new File("src/test/resources/program.txt"))){
-            Assertions.assertTrue(program.hasNext());
-            program.readLawnSize();
+            program.readLawn();
             Assertions.assertTrue(program.hasNext());
             LawnMower lawnMower = program.readLawnMower();
             Assertions.assertEquals(1, lawnMower.getX());
@@ -71,8 +72,7 @@ public class LawnMowerProgramTest {
     @Test
     public void testReadInstructions() throws IOException {
         try(LawnMowerProgram program = new LawnMowerProgram(new File("src/test/resources/program.txt"))){
-            Assertions.assertTrue(program.hasNext());
-            program.readLawnSize();
+            program.readLawn();
             Assertions.assertTrue(program.hasNext());
             program.readLawnMower();
             Assertions.assertTrue(program.hasNext());

@@ -15,15 +15,17 @@ public class LawnMowerProgram implements AutoCloseable {
     public LawnMowerProgram(File programFile) throws FileNotFoundException {
         this.file = programFile;
         this.reader = new BufferedReader(new FileReader(programFile));
+        this.readLine();
     }
 
     /**
-     * Reads the lawn size from the current line
-     * @return an array containing the width and height of the lawn
+     * Reads the lawn from the current line
+     * @return a Lawn object
      */
-    public int[] readLawnSize(){
+    public Lawn readLawn(){
         String[] parts = currentLine.split(" ");
-        return new int[]{Integer.parseInt(parts[0]), Integer.parseInt(parts[1])};
+        this.readLine();
+        return new Lawn(Integer.parseInt(parts[0])+1, Integer.parseInt(parts[1])+1);
     }
 
     /**
@@ -32,6 +34,7 @@ public class LawnMowerProgram implements AutoCloseable {
      */
     public LawnMower readLawnMower(){
         String[] parts = currentLine.split(" ");
+        this.readLine();
         return new LawnMower(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), Direction.valueOf(String.valueOf(parts[2].charAt(0))));
     }
 
@@ -40,19 +43,24 @@ public class LawnMowerProgram implements AutoCloseable {
      * @return a string containing the instructions
      */
     public String readInstructions(){
-        return currentLine;
+        String line = this.currentLine;
+        this.readLine();
+        return line;
+    }
+
+    private void readLine() {
+        try {
+            currentLine = reader.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Reads the next line of the program file
      * @return true if there is a next line, false otherwise
      */
     public boolean hasNext(){
-        try {
-            return (currentLine = reader.readLine()) != null;
-        } catch (IOException e) {
-            return false;
-        }
+        return currentLine != null;
     }
 
     /**
