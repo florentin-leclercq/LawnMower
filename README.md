@@ -5,6 +5,8 @@ It's made in Java with Gradle and follows a set of instructions written below (i
 
 It was made using a TDD approach, using JUnit and Mockito for the tests.
 
+No instructions were given on whether or not a lawn mower could go on a occupied grid cell or not. As such, nothing were made to prevent this from happening. Although could be easily implemented with a list reduce.
+
 # Instructions (french)
 ## La tondeuse
 La société MowItNow a décidé de développer une tondeuse à gazon automatique,
