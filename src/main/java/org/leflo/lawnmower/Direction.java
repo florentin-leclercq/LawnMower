@@ -1,5 +1,8 @@
 package org.leflo.lawnmower;
 
+/**
+ * Represents the cardinal directions.
+ */
 public enum Direction {
 
     N(0, 1),
@@ -7,8 +10,8 @@ public enum Direction {
     S(0, -1),
     W(-1, 0);
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     Direction(int x, int y) {
         this.x = x;

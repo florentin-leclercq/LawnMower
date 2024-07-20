@@ -1,19 +1,21 @@
 package org.leflo.lawnmower;
 
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents a lawn mower program that reads a file containing lawn size, lawn mowers and instructions
  */
 public class LawnMowerProgram implements AutoCloseable {
 
-    private File file;
-    private BufferedReader reader;
+    private static final Logger LOGGER = Logger.getLogger(LawnMowerProgram.class.getName());
+
+    private final BufferedReader reader;
 
     private String currentLine;
 
     public LawnMowerProgram(File programFile) throws FileNotFoundException {
-        this.file = programFile;
         this.reader = new BufferedReader(new FileReader(programFile));
         this.readLine();
     }
@@ -52,7 +54,7 @@ public class LawnMowerProgram implements AutoCloseable {
         try {
             currentLine = reader.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "An error occurred while reading the file", e);
         }
     }
 

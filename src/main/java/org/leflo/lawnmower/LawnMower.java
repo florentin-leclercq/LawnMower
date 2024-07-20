@@ -1,5 +1,8 @@
 package org.leflo.lawnmower;
 
+/**
+ * Represents a lawn mower
+ */
 public class LawnMower {
 
     private Direction direction;
